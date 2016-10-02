@@ -6,9 +6,7 @@ namespace Client
 {
     public class Program
     {
-        //sækja token
-        //leiðbeiningar um það á github
-        //https://github.com/IdentityServer/IdentityServer4.Samples/blob/7d768460a2eb6a704a1933ad1f99ca5f384ce8fa/Quickstarts/1_ClientCredentials/src/Client/Program.cs
+
         public static void Main(string[] args) => MainAsync().GetAwaiter().GetResult();
 
         private static async Task MainAsync()
@@ -21,7 +19,7 @@ namespace Client
             var tokenClient = new TokenClient(temp.TokenEndpoint, "ro.client", "secret");  
             var tokenResponse = await tokenClient.RequestResourceOwnerPasswordAsync("alice", "password", "api1");
             var tokenResponse1 = await tokenClient.RequestResourceOwnerPasswordAsync("bob", "password", "api1");
-            var tokenResponseAnonymous = await tokenClient.RequestResourceOwnerPasswordAsync("anon","passwod","api1");
+            
 
             if (tokenResponse.IsError)  
             {
@@ -30,32 +28,43 @@ namespace Client
             }
             Console.WriteLine("well fuck me sideways");
             Console.WriteLine(tokenResponse.AccessToken);
-            var cli = new HttpClient();
-            cli.SetBearerToken(tokenResponse.AccessToken);
-
-            	//how to test post?
+            var teacher = new HttpClient();
+            teacher.SetBearerToken(tokenResponse.AccessToken);
 
                 //Need to fix forbidden claim
-                
-            var cli2 = new HttpClient();
-            cli2.SetBearerToken(tokenResponse1.AccessToken);
 
-            var cli3 = new HttpClient();
-            cli3.SetBearerToken(tokenResponseAnonymous.AccessToken);
-            //Test if the user has the authorization
-            var response = await cli.GetAsync("http://localhost:5001/api/courses/1");
-            Console.WriteLine("THIS IS THE RESPONSE*************");
+            var student = new HttpClient();
+            student.SetBearerToken(tokenResponse1.AccessToken);
+
+            var anon = new HttpClient();
+
+            Console.WriteLine("***********Teacher tests***********");
+            var response = await teacher.GetAsync("http://localhost:5001/api/courses/1");
+            Console.WriteLine("Teacher");
             Console.WriteLine(response);
             
 
-            var response2 = await cli2.GetAsync("http://localhost:5001/api/courses/1");
+            var responsevol4 = await teacher.PostAsync("http://localhost:5001/api/courses/",null);
+            Console.WriteLine("THIS IS THE RESPONSE*4444444444444444");
+            var content = responsevol4.Content.ReadAsStringAsync().Result;
+            Console.WriteLine(content);
+            Console.WriteLine(responsevol4);
+           
+            Console.WriteLine("***********Student tests***********");
+
+            var response2 = await student.GetAsync("http://localhost:5001/api/courses/1");
             Console.WriteLine("THIS IS THE RESPONSE*************222222222");
             Console.WriteLine(response2);
             
-            var response3 = await cli3.GetAsync("http://localhost:5001/api/courses/1");
+            Console.WriteLine("***********Anon tests***********");
+
+            var response3 = await anon.GetAsync("http://localhost:5001/api/courses/1");
             Console.WriteLine("THIS IS THE RESPONSE*************333333333333");
             Console.WriteLine(response3);
             
+            var response4 = await anon.PostAsync("http://localhost:5001/api/courses/",null);
+            Console.WriteLine(response4);
+
             if (!response.IsSuccessStatusCode)
             {
                 Console.WriteLine(response.StatusCode);

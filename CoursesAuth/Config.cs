@@ -13,6 +13,7 @@ public class Config
 		{
 			new Scope
 			{
+				IncludeAllClaimsForUser = true,
 				Name = "api1",
 				Description = "My API"
 			}

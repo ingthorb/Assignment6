@@ -36,6 +36,7 @@ namespace CoursesAPI
             {
                 options.AddPolicy("TeachersOnly", policy => policy.RequireClaim("IsTeacher"));
                 options.AddPolicy("StudentsOnly", policy => policy.RequireClaim("IsStudent"));
+                options.AddPolicy("TeacherORStudent", policy => policy.RequireAuthenticatedUser());
             });
         }
 

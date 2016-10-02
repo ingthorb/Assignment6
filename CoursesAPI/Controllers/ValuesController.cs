@@ -8,9 +8,6 @@ using Microsoft.AspNetCore.Authorization;
 namespace CoursesAPI.Controllers
 {
     [Route("api/courses")]
-    //Authorize
-    //stilla af claim
-    //eh notandi ma gera x
     [Authorize]
     public class ValuesController : Controller
     {
@@ -27,8 +24,7 @@ namespace CoursesAPI.Controllers
 
         // GET api/values/5
         [HttpGet("{id}")]
-        [Authorize(Policy = "TeachersOnly" )]
-        [Authorize(Policy = "StudentsOnly" )]
+        [Authorize(Policy = "TeacherORStudent" )]
         public string Get(int id)
         {
             string joke = 
@@ -40,9 +36,10 @@ namespace CoursesAPI.Controllers
         // POST api/values
         [HttpPost]
         [Authorize(Policy = "TeachersOnly")]
-        public string Post([FromBody]string value)
+        public string Post()
         {
-            return "Raudrofusafi";
+            string lol =  "Raudrofusafi"; 
+            return lol;
         }
 
     }
