@@ -6,7 +6,6 @@ namespace Client
 {
     public class Program
     {
-
         public static void Main(string[] args) => MainAsync().GetAwaiter().GetResult();
 
         private static async Task MainAsync()
@@ -14,7 +13,6 @@ namespace Client
             //notast við authentication serverinn
              var temp = await DiscoveryClient.GetAsync("http://localhost:5000");
              
-
             // request token
             var tokenClient = new TokenClient(temp.TokenEndpoint, "ro.client", "secret");  
             var tokenResponse = await tokenClient.RequestResourceOwnerPasswordAsync("alice", "password", "api1");
@@ -26,45 +24,74 @@ namespace Client
                 Console.WriteLine(tokenResponse.Error);
                 return;
             }
-            Console.WriteLine("well fuck me sideways");
-            Console.WriteLine(tokenResponse.AccessToken);
+
+            //Teacher
             var teacher = new HttpClient();
             teacher.SetBearerToken(tokenResponse.AccessToken);
-
-                //Need to fix forbidden claim
-
+ 
+            //Student
             var student = new HttpClient();
             student.SetBearerToken(tokenResponse1.AccessToken);
 
+            //Anonymous
             var anon = new HttpClient();
 
             Console.WriteLine("***********Teacher tests***********");
-            var response = await teacher.GetAsync("http://localhost:5001/api/courses/1");
-            Console.WriteLine("Teacher");
-            Console.WriteLine(response);
-            
 
-            var responsevol4 = await teacher.PostAsync("http://localhost:5001/api/courses/",null);
-            Console.WriteLine("THIS IS THE RESPONSE*4444444444444444");
-            var content = responsevol4.Content.ReadAsStringAsync().Result;
-            Console.WriteLine(content);
-            Console.WriteLine(responsevol4);
+            //Get on all courses
+            var response = await teacher.GetAsync("http://localhost:5001/api/courses");
+            Console.WriteLine("Get on all courses");
+            Console.WriteLine("Response: " + response.ReasonPhrase);
+
+            //Get on single course
+            var response2 = await teacher.GetAsync("http://localhost:5001/api/courses/1");
+            Console.WriteLine("Get on a single course");
+            Console.WriteLine("Response: " + response2.ReasonPhrase);
+
+            //post a course
+            var response3 = await teacher.PostAsync("http://localhost:5001/api/courses/",null);
+            Console.WriteLine("Post on a single course");
+            Console.WriteLine("Response: " + response3.ReasonPhrase);
            
+            Console.WriteLine("");
+
             Console.WriteLine("***********Student tests***********");
 
-            var response2 = await student.GetAsync("http://localhost:5001/api/courses/1");
-            Console.WriteLine("THIS IS THE RESPONSE*************222222222");
-            Console.WriteLine(response2);
-            
-            Console.WriteLine("***********Anon tests***********");
+            //Get on all courses
+            var studentresp1 = await student.GetAsync("http://localhost:5001/api/courses");
+            Console.WriteLine("Get on all courses");
+            Console.WriteLine("Response: " + studentresp1.ReasonPhrase);
 
-            var response3 = await anon.GetAsync("http://localhost:5001/api/courses/1");
-            Console.WriteLine("THIS IS THE RESPONSE*************333333333333");
-            Console.WriteLine(response3);
-            
-            var response4 = await anon.PostAsync("http://localhost:5001/api/courses/",null);
-            Console.WriteLine(response4);
+            //Get on a single course            
+            var studentresp2 = await student.GetAsync("http://localhost:5001/api/courses/1");
+            Console.WriteLine("Get on a single course");
+            Console.WriteLine("Response: " + studentresp2.ReasonPhrase);
 
+            //post a course
+            var studentresp3 = await student.PostAsync("http://localhost:5001/api/courses/",null);
+            Console.WriteLine("Post on a single course");
+            Console.WriteLine("Response: " + studentresp3.ReasonPhrase);
+            
+            Console.WriteLine("");
+
+            Console.WriteLine("***********Anonymous tests***********");
+
+            //Get on all courses
+            var anonresp1 = await anon.GetAsync("http://localhost:5001/api/courses");
+            Console.WriteLine("Get on all courses");
+            Console.WriteLine("Response: " + anonresp1.ReasonPhrase);
+
+            //Get on a single course            
+            var anonresp2 = await anon.GetAsync("http://localhost:5001/api/courses/1");
+            Console.WriteLine("Get on a single course");
+            Console.WriteLine("Response: " + anonresp2.ReasonPhrase);
+
+            //post a course
+            var anonresp3 = await anon.PostAsync("http://localhost:5001/api/courses/",null);
+            Console.WriteLine("Post on a single course");
+            Console.WriteLine("Response: " + anonresp3.ReasonPhrase);
+
+            Console.WriteLine("");
             if (!response.IsSuccessStatusCode)
             {
                 Console.WriteLine(response.StatusCode);
