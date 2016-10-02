@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CoursesAPI.Controllers
 {
@@ -10,43 +11,39 @@ namespace CoursesAPI.Controllers
     //Authorize
     //stilla af claim
     //eh notandi ma gera x
+    [Authorize]
     public class ValuesController : Controller
     {
         // GET api/values
         [HttpGet]
         [AllowAnonymous]
-        //For everyone
         public String GetCourses()
         {
-            //Return all the courses
-            return "Raudrofusafi";
+            string joke = 
+            "Q: Why do Java programmers have to wear glasses?" +
+            "A: Because they don't C#";
+            return joke;
         }
 
         // GET api/values/5
-        //Authorize(Policy = "TeachersOnly","StudentsOnly")
         [HttpGet("{id}")]
+        [Authorize(Policy = "TeachersOnly" )]
+        [Authorize(Policy = "StudentsOnly" )]
         public string Get(int id)
         {
-            return "value";
+            string joke = 
+            "Q:Why can't a blonde dial 911? " +
+            "A: She can't find the eleven.";
+            return joke;
         }
 
         // POST api/values
         [HttpPost]
-        //(Authorize(Policy = "TeachersOnly"))
-        public void Post([FromBody]string value)
+        [Authorize(Policy = "TeachersOnly")]
+        public string Post([FromBody]string value)
         {
+            return "Raudrofusafi";
         }
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }

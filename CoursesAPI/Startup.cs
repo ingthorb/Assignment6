@@ -28,7 +28,15 @@ namespace CoursesAPI
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
+
+            //Add policy!!
+
             services.AddMvc();
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("TeachersOnly", policy => policy.RequireClaim("IsTeacher"));
+                options.AddPolicy("StudentsOnly", policy => policy.RequireClaim("IsStudent"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -37,6 +45,7 @@ namespace CoursesAPI
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
+            //Authentication serverinn runnar á 5000
             app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
              {
                   Authority = "http://localhost:5000",
