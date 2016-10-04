@@ -35,6 +35,7 @@ namespace Client
 
             //Anonymous
             var anon = new HttpClient();
+            Console.WriteLine("");
 
             Console.WriteLine("***********Teacher tests***********");
 
@@ -52,7 +53,9 @@ namespace Client
             var response3 = await teacher.PostAsync("http://localhost:5001/api/courses/",null);
             Console.WriteLine("Post on a single course");
             Console.WriteLine("Response: " + response3.ReasonPhrase);
-           
+            Console.WriteLine("");
+            Console.WriteLine("End of teachers tests");
+
             Console.WriteLine("");
 
             Console.WriteLine("***********Student tests***********");
@@ -71,7 +74,8 @@ namespace Client
             var studentresp3 = await student.PostAsync("http://localhost:5001/api/courses/",null);
             Console.WriteLine("Post on a single course");
             Console.WriteLine("Response: " + studentresp3.ReasonPhrase);
-            
+            Console.WriteLine("");
+            Console.WriteLine("End of students tests");
             Console.WriteLine("");
 
             Console.WriteLine("***********Anonymous tests***********");
@@ -90,7 +94,8 @@ namespace Client
             var anonresp3 = await anon.PostAsync("http://localhost:5001/api/courses/",null);
             Console.WriteLine("Post on a single course");
             Console.WriteLine("Response: " + anonresp3.ReasonPhrase);
-
+            Console.WriteLine("");
+            Console.WriteLine("End of anonymous tests");
             Console.WriteLine("");
             if (!response.IsSuccessStatusCode)
             {
