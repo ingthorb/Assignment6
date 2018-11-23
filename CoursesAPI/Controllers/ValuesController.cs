@@ -19,6 +19,7 @@ namespace CoursesAPI.Controllers
             string joke = 
             "Q: Why do Java programmers have to wear glasses?" +
             "A: Because they don't C#";
+            // so bad jokes 
             return joke;
         }
 
