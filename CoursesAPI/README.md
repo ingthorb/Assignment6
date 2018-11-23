@@ -4,6 +4,8 @@ We've made some big updates in this release, so it’s **important** that you sp
 
 You've created a new ASP.NET Core project. [Learn what's new](https://go.microsoft.com/fwlink/?LinkId=518016)
 
+Just testing this out with Azure DevOps
+
 ## This application consists of:
 
 *   Sample pages using ASP.NET Core MVC
